@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<title>Laboremus Report Uploader</title>
+</head>
+
+<body>
+
+	<div class="container=fluid">
+		<div class="row">
+			
+
+			<div class="col-md-6 text-center">
+				<hr />
+				<h5><u> Filter Total Profit and Profitable Items by date</u> </h5>
+				<br>
+<p>Date format(yyyy-mm-dd) eg 2014-04-25</p>
+				<form class="form-inline" action="/report" method="POST">
+					<h7> </h7>
+					<label for="fromDate">From : </label>
+					<input type="date" id="fromDate" name="fromDate">
+
+					<label for="toDate">To :</label>
+					<input type="date" id="toDate" name="toDate">
+
+					<button type="submit" class="btn btn-primary">Submit</button>
+				</form>
+
+				<br>
+				<h5> Total Profit</h5>
+				<br />
+				<strong th:text="${totalProfit}"></strong>
+			</div>
+
+			<div class="col-md-3">
+				<hr />
+				<h5> Top 5 Profitable Item Types</h5>
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th scope="col" class="text-center">Item Type </th>
+							<th scope="col" class="text-center">Profit </th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="profitableItem: ${profitableItems}">
+							<td th:text="${profitableItem.itemType}">profitableItem</td>
+							<td th:text="${profitableItem.totalItemsSold}">totalItemsSold</td>
+						</tr>
+
+						
+					</tbody>
+				</table>
+			</div>
+
+			<div class="col-md-3">
+
+				<hr />
+				<div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${successMessage}">
+					<strong th:text="${successMessage}"></strong> 
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+
+				<div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${errorMessage}">
+					<strong th:text="${errorMessage}"></strong> 
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+
+				<form action="/" th:action="@{'/fileUpload'}" method="POST" th:object="${report}"
+					enctype="multipart/form-data">
+					<div class="form-group">
+						<label for="FileUpload">Select a report to Upload(CSV)</label>
+						<input type="file" class="form-control" placeholder="Choose a File" id="file" name="file"
+							th:field="*{file}">
+					</div>
+
+					<button type="submit" class="btn btn-primary">Submit</button>
+				</form>
+			</div>
+
+			<div class="col-md-12">
+				<h4>All Reports</h4>
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th scope="col">#</th>
+							<th scope="col">Item Type </th>
+							<th scope="col">Order Date</th>
+							<th scope="col">Order Priority</th>
+							<th scope="col">Units Sold</th>
+							<th scope="col">Unit Price</th>
+							<th scope="col">Total Cost</th>
+							<th scope="col">Total Revenue</th>
+
+
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="report: ${reports}">
+							<th th:text="${report.id}">1</th>
+							<td th:text="${report.itemType}">list</td>
+							<td th:text="${report.orderDate}">list</td>
+							<td th:text="${report.orderPriority}">list</td>
+							<td th:text="${report.unitsSold}">list</td>
+							<td th:text="${report.unitPrice}">list</td>
+							<td th:text="${report.totalCost}">list</td>
+							<td th:text="${report.totalRevenue}">list</td>
+						</tr>
+
+					</tbody>
+				</table>
+			</div>
+
+		</div>
+	</div>
+
+
+
+
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+
+</html>
